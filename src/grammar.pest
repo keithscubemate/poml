@@ -1,0 +1,23 @@
+integer = @{ ASCII_DIGIT+ }
+
+first_char = _{ ASCII_ALPHA | "-" | "_" }
+char = _{ first_char | ASCII_DIGIT }
+
+ident = @{ first_char ~ char* }
+
+unary_minus = { "-" }
+primary = _{ ident | integer | "(" ~ expr ~ ")" }
+
+atom = _{ unary_minus? ~ primary }
+
+bin_op = _{ add | sub | mul | div }
+add = { "+" }
+sub = { "-" }
+mul = { "*" }
+div = { "/" }
+
+expr = { atom ~ (bin_op ~ atom)* }
+
+WHITESPACE = _ { " " }
+
+equation = _{ SOI ~ expr ~ EOI }
