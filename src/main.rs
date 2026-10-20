@@ -170,7 +170,11 @@ fn parse_expr(pair: Pair<Rule>) -> Expr {
                 Rule::integer => Expr::Integer(prim.as_str().parse().unwrap()),
                 Rule::ident => Expr::Var(prim.as_str().to_string()),
                 Rule::expr | Rule::app_expr | Rule::if_expr => parse_expr(prim),
-                rule => unreachable!("Expr::parse expected atom, found {:?}", rule),
+                rule => unreachable!(
+                    "Expr::parse expected atom, found {:?}: {:?}",
+                    rule,
+                    prim.as_str()
+                ),
             })
             .map_infix(|lhs, op, rhs| {
                 let op = match op.as_rule() {
